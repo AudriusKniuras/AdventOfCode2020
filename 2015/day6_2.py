@@ -1,3 +1,7 @@
+from time import time
+
+t0 = time()
+
 grid = []
 for i in range(1000):
   grid.append([])
@@ -58,3 +62,6 @@ for i in range(1000):
 
 
 print(brightness)
+
+t1 = time()
+print(f'elapsed time: {t1-t0}')

@@ -1,3 +1,7 @@
+from time import time
+
+t0 = time()
+
 grid = []
 for i in range(1000):
   grid.append([])
@@ -70,11 +74,8 @@ for i in range(1000):
     if grid[i][j] == 1:
       lit_lights += 1
 print(lit_lights)
-# print(grid)
 
-# a = []
-# for i in range(4):
-#   a.append([])
-#   for j in range(4):
-#     a[i].append(f'{i} {j}')
-# print(a)
+
+t1 = time()
+
+print(f'elapsed time: {t1-t0}')

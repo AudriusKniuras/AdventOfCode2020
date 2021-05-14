@@ -18,7 +18,18 @@ unresolved = len(lines)
 resolved_lines = []
 
 
+def convert_uint16(num):
+  try:
+    return uint16(num)
+  except:
+    return num
+
+def check_numeric(num):
+  if 
+
 def and_funct(a, b, result):
+  a = convert_uint16(a)
+  b = convert_uint16(b)
   if a.isnumeric() or b.isnumeric():
     if a in values:
       values[result] = instructions['and'](b, values[a])
@@ -33,6 +44,8 @@ def and_funct(a, b, result):
   return True
 
 def or_funct(a, b, result):
+  a = convert_uint16(a)
+  b = convert_uint16(b)
   if a.isnumeric() or b.isnumeric():
     if a in values:
       values[result] = instructions['or'](b, values[a])
@@ -46,6 +59,39 @@ def or_funct(a, b, result):
     return False
   return True
 
+def lshift_funct(a, b, result):
+  a = convert_uint16(a)
+  b = convert_uint16(b)
+  if a in values:
+    values[result] = instructions['lshift'](values[a], b)
+    return True
+  return False
+
+def rshift_funct(a, b, result):
+  a = convert_uint16(a)
+  b = convert_uint16(b)
+  if a in values:
+    values[result] = instructions['rshift'](values[a], b)
+    return True
+  return False
+
+def not_funct(a, result):
+  a = convert_uint16(a)
+  if a in values:
+    values[result] = instructions['not'](values[a])
+    return True
+  return False
+
+def assign_funct(a, result):
+  a = convert_uint16(a)
+  if a.isnumeric():
+    values[result] = a
+    return True
+  else:
+    if a in values:
+      values[result] = values[a]
+      return True
+  return False
 
 while unresolved > 0:
   for line in lines:
@@ -58,8 +104,25 @@ while unresolved > 0:
       if or_funct(line[0], line[2], line[-1]):
         resolved_lines.append(line)
         unresolved -= 1
-  # TODO:
-  lines = lines - unresolved
+    elif 'LSHIFT' in line:
+      if lshift_funct(line[0], line[2], line[-1]):
+        resolved_lines.append(line)
+        unresolved -= 1
+    elif 'RSHIFT' in line:
+      if rshift_funct(line[0], line[2], line[-1]):
+        resolved_lines.append(line)
+        unresolved -= 1
+    elif 'NOT' in line:
+      if not_funct(line[1], line[-1]):
+        resolved_lines.append(line)
+        unresolved -= 1
+    else:
+      if assign_funct(line[0], line[-1]):
+        resolved_lines.append(line)
+        unresolved -= 1
+
+  tmp_lines = [line for line in lines if line not in resolved_lines]
+  lines = tmp_lines.copy()
       
 
 
